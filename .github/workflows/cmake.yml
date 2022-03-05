@@ -144,7 +144,7 @@ jobs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         RELEASE_TAG=$(date +'%Y-%m-%d')-$(git rev-parse --short HEAD)
-        git tag -a $RELEASE_TAG -m "Release on $(date +'%Y-%m-%d) for commit $(git rev-parse HEAD)"
+        git tag -a $RELEASE_TAG -m "Release on $(date +'%Y-%m-%d') for commit $(git rev-parse HEAD)"
         echo "::set-output name=release_tag::$RELEASE_TAG"
 
     - name: Push changes
