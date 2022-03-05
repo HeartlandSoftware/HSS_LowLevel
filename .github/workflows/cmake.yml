@@ -60,17 +60,17 @@ jobs:
       id: cache-boost
       with:
         # Set the default path as the path to cache
-        path: ${{ env.GITHUB_WORKSPACE }}/boost/boost
+        path: '${{ runner.workspace }}/boost_*.tar.gz'
         # Use the version as the key to only cache the correct version
         key: boost-${{ env.BOOST_VERSION }}
     
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.1.0
+      uses: egor-tensin/build-boost@v1
       id: install-boost
       with:
-        boost_version: ${{ env.BOOST_VERSION }}
-        platform_version: ${{ matrix.os_version }}
+        version: ${{ env.BOOST_VERSION }}
         toolset: ${{ matrix.build_tool }}
+        libraries: system
     
     - name: Bundle Include Files
       if: matrix.os == 'ubuntu-20.04'
@@ -91,7 +91,7 @@ jobs:
         cd build
         mkdir ubuntu
         cd ubuntu
-        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build Ubuntu
       if: matrix.os == 'ubuntu-20.04'
@@ -104,7 +104,7 @@ jobs:
         cd build
         mkdir windows
         cd windows
-        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }}
 
     - name: Build Windows
       if: matrix.os == 'windows-latest'
