@@ -106,7 +106,7 @@ jobs:
         cd build
         mkdir windows
         cd windows
-        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }}
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DMSVC=1
 
     - name: Build Windows
       if: matrix.os == 'windows-2019'
