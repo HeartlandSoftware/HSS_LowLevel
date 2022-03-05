@@ -165,7 +165,8 @@ jobs:
       uses: mikepenz/release-changelog-builder-action@v2.9.0
       with:
         toTag: ${{ steps.repo-tag.outputs.release_tag }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create release
       uses: softprops/action-gh-release@v1
