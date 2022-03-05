@@ -85,6 +85,8 @@ set_target_properties(LowLevel PROPERTIES
 
 configure_file(LowLevel.pc.in LowLevel.pc @ONLY)
 
+message(STATUS "Windows SDK Version ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+
 install(FILES ${CMAKE_BINARY_DIR}/LowLevel.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 install(TARGETS LowLevel DESTINATION /usr/lib)
 
