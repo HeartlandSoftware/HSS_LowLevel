@@ -16,12 +16,12 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
-          - windows-latest
+          - windows-2019
         include:
           - os: ubuntu-20.04
             os_version: 20.04
             build_tool: gcc
-          - os: windows-latest
+          - os: windows-2019
             os_version: 2022
             build_tool: msvc142
 
@@ -100,7 +100,7 @@ jobs:
         cmake --build .
 
     - name: Configure CMake Windows
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       run: |
         mkdir build
         cd build
@@ -109,7 +109,7 @@ jobs:
         cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }}
 
     - name: Build Windows
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       run: |
         cd build/windows
         cmake --build . --config ${{env.BUILD_TYPE}}
@@ -123,7 +123,7 @@ jobs:
         retention-days: 1
 
     - name: Upload Windows Library
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       uses: actions/upload-artifact@v2
       with:
         name: release-libs
