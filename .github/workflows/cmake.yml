@@ -1,0 +1,174 @@
+name: CMake
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  BUILD_TYPE: Release
+  JSON_VERSION: 3.7.3
+  BOOST_VERSION: 1.76.0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - windows-latest
+        include:
+          - os: ubuntu-20.04
+            os_version: 20.04
+            build_tool: gcc
+          - os: windows-latest
+            os_version: 2019
+            build_tool: msvc
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - uses: suisei-cn/actions-download-file@v1
+      name: Download bithacks.h
+      with:
+        url: "https://raw.githubusercontent.com/pkrumins/bithacks.h/master/bithacks.h"
+        target: third_party/
+    
+    - uses: suisei-cn/actions-download-file@v1
+      name: Download debug-trap.h
+      with:
+        url: "https://raw.githubusercontent.com/nemequ/portable-snippets/master/debug-trap/debug-trap.h"
+        target: third_party/
+    
+    - uses: suisei-cn/actions-download-file@v1
+      name: Download propagate_const.h
+      with:
+        url: "https://raw.githubusercontent.com/jbcoe/propagate_const/master/propagate_const.h"
+        target: third_party/
+    
+    - uses: suisei-cn/actions-download-file@v1
+      name: Download json.hpp
+      with:
+        url: "https://github.com/nlohmann/json/releases/download/v${{ env.JSON_VERSION }}/json.hpp"
+        target: third_party/
+
+    # Retrieve the cache, uses cache@v2
+    - name: Cache boost
+      uses: actions/cache@v2
+      id: cache-boost
+      with:
+        # Set the default path as the path to cache
+        path: ${{ env.GITHUB_WORKSPACE }}/boost/boost
+        # Use the version as the key to only cache the correct version
+        key: boost-${{ env.BOOST_VERSION }}
+    
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.1.0
+      id: install-boost
+      with:
+        boost_version: ${{ env.BOOST_VERSION }}
+        platform_version: ${{ matrix.os_version }}
+        toolset: ${{ matrix.build_tool }}
+    
+    - name: Bundle Include Files
+      if: matrix.os == 'ubuntu-20.04'
+      run: zip includes.zip include/* third_party/* -r
+
+    - name: Upload Include Bundle
+      if: matrix.os == 'ubuntu-20.04'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: includes.zip
+        retention-days: 1
+
+    - name: Configure CMake Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        mkdir build
+        cd build
+        mkdir ubuntu
+        cd ubuntu
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: cmake --build .
+
+    - name: Configure CMake Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir build
+        cd build
+        mkdir windows
+        cd windows
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build Windows
+      if: matrix.os == 'windows-latest'
+      run: cmake --build . --config ${{env.BUILD_TYPE}}
+
+    - name: Upload Ubuntu Library
+      if: matrix.os == 'ubuntu-20.04'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: build/ubuntu/libLowLevel.a
+        retention-days: 1
+
+    - name: Upload Windows Library
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: build/windows/Release/LowLevel.lib
+        retention-days: 1
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+  
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Tag the repository
+      id: repo-tag
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        RELEASE_TAG=$(date +'%Y-%m-%d')-$(git rev-parse --short HEAD)
+        git tag -a $RELEASE_TAG -m "Release on $(date +'%Y-%m-%d) for commit $(git rev-parse HEAD)"
+        echo "::set-output name=release_tag::$RELEASE_TAG"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        tags: true
+    
+    - name: Download Libraries
+      uses: actions/download-artifact@v2
+      with:
+        name: release-libs
+    
+    - name: Create Release Notes
+      id: build-notes
+      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      with:
+        toTag: ${{ steps.repo-tag.outputs.release_tag }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: ${{ steps.repo-tag.outputs.release_tag }}
+        body: ${{ steps.build-notes.outputs.changelog }}
+        files: |
+          build/windows/Release/LowLevel.lib
+          build/ubuntu/libLowLevel.a
+          includes.zip
+        tag_name: refs/tags/${{ steps.repo-tag.outputs.release_tag }}
