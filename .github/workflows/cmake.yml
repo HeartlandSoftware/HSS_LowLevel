@@ -22,8 +22,8 @@ jobs:
             os_version: 20.04
             build_tool: gcc
           - os: windows-latest
-            os_version: 2019
-            build_tool: msvc
+            os_version: 2022
+            build_tool: msvc142
 
     runs-on: ${{ matrix.os }}
 
