@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.2 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.3 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -22,6 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_NO_MFC")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 
 add_library(LowLevel STATIC
+    cpp/AfxIniSettings.cpp
     cpp/colors.c
     cpp/convert.cpp
     cpp/cpoints.cpp
@@ -51,6 +52,7 @@ set_target_properties(LowLevel PROPERTIES DEFINE_SYMBOL "")
 
 set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/hssconfig/config.h
+    PUBLIC_HEADER include/AfxIniSettings.h
     PUBLIC_HEADER include/boost_bimap.h
     PUBLIC_HEADER include/boost_compression.h
     PUBLIC_HEADER include/boost_ll_config.h
