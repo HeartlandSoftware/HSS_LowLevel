@@ -22,6 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_NO_MFC")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 
 add_library(LowLevel STATIC
+    cpp/AfxIniSettings.cpp
     cpp/colors.c
     cpp/convert.cpp
     cpp/cpoints.cpp
@@ -51,6 +52,7 @@ set_target_properties(LowLevel PROPERTIES DEFINE_SYMBOL "")
 
 set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/hssconfig/config.h
+    PUBLIC_HEADER include/AfxIniSettings.h
     PUBLIC_HEADER include/boost_bimap.h
     PUBLIC_HEADER include/boost_compression.h
     PUBLIC_HEADER include/boost_ll_config.h
