@@ -87,6 +87,11 @@ jobs:
         path: includes.zip
         retention-days: 1
 
+    - name: Setup Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt install libgtest-dev
+
     - name: Configure CMake Ubuntu
       id: configure-ubuntu
       if: matrix.os == 'ubuntu-20.04'
@@ -105,6 +110,25 @@ jobs:
         cd build/ubuntu
         cmake --build .
 
+    - name: Test Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        cd build/ubuntu
+        ctest
+
+    - name: Setup Windows
+      id: setup-windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        git clone https://github.com/google/googletest.git googletest
+        cd googletest
+        mkdir msvc
+        cd msvc
+        cmake ../
+        cmake --build . --config Release
+        echo "::set-output name=google_test_include_dir::googletest/googletest/include"
+        echo "::set-output name=google_test_library_dir::googletest/msvc/lib/Release"
+
     - name: Configure CMake Windows
       if: matrix.os == 'windows-2019'
       run: |
@@ -112,13 +136,19 @@ jobs:
         cd build
         mkdir windows
         cd windows
-        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DMSVC=1
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DMSVC=1 -DGTEST_INCLUDE_DIR=${{ steps.setup-windows.outputs.google_test_include_dir }} -DGTEST_LIBRARY_DIR=${{ steps.setup-windows.outputs.google_test_library_dir }}
 
     - name: Build Windows
       if: matrix.os == 'windows-2019'
       run: |
         cd build/windows
         cmake --build . --config ${{env.BUILD_TYPE}}
+
+    - name: Test Windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        cd build/windows
+        ctest
 
     - name: Upload Ubuntu Library
       if: matrix.os == 'ubuntu-20.04'
