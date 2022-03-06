@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 add_library(LowLevel STATIC
     cpp/colors.c
     cpp/convert.cpp
+    cpp/cpoints.cpp
     cpp/hresult.cpp
     cpp/htree.cpp
     cpp/linklist.cpp
@@ -53,6 +54,7 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/boost_compression.h
     PUBLIC_HEADER include/boost_ll_config.h
     PUBLIC_HEADER include/colors.h
+    PUBLIC_HEADER include/cpoints.h
     PUBLIC_HEADER include/COMInit.h
     PUBLIC_HEADER include/ConversionFactors.h
     PUBLIC_HEADER include/convert.h
