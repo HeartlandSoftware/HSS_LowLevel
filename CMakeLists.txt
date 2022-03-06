@@ -25,6 +25,7 @@ add_library(LowLevel STATIC
     cpp/colors.c
     cpp/convert.cpp
     cpp/cpoints.cpp
+    cpp/Exprtopt.cpp
     cpp/hresult.cpp
     cpp/htree.cpp
     cpp/linklist.cpp
@@ -59,6 +60,7 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/ConversionFactors.h
     PUBLIC_HEADER include/convert.h
     PUBLIC_HEADER include/debug-trap.h
+    PUBLIC_HEADER include/Exprtopt.h
     PUBLIC_HEADER include/filesystem.hpp
     PUBLIC_HEADER include/guid.h
     PUBLIC_HEADER include/hresult.h
