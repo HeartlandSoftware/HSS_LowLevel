@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.1 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.2 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -25,6 +25,7 @@ add_library(LowLevel STATIC
     cpp/colors.c
     cpp/convert.cpp
     cpp/cpoints.cpp
+    cpp/Exprtopt.cpp
     cpp/hresult.cpp
     cpp/htree.cpp
     cpp/linklist.cpp
@@ -59,6 +60,7 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/ConversionFactors.h
     PUBLIC_HEADER include/convert.h
     PUBLIC_HEADER include/debug-trap.h
+    PUBLIC_HEADER include/Exprtopt.h
     PUBLIC_HEADER include/filesystem.hpp
     PUBLIC_HEADER include/guid.h
     PUBLIC_HEADER include/hresult.h
