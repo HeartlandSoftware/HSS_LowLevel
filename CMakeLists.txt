@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.3 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.4 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -10,6 +10,13 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 SET(BOOST_INCLUDE_DIR "error" CACHE STRING "The path to the boost libraries includes")
+SET(GTEST_INCLUDE_DIR "error" CACHE STRING "The path to the Google Test includes")
+SET(GTEST_LIBRARY_DIR "error" CACHE STRING "The path to the Google Test libraries")
+
+find_library(FOUND_GTEST_LIBRARY_PATH NAMES gtest PATHS ${GTEST_LIBRARY_DIR})
+find_library(FOUND_GTEST_MAIN_LIBRARY_PATH NAMES gtest_main PATHS ${GTEST_LIBRARY_DIR})
+
+enable_testing()
 
 if (MSVC)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
@@ -40,8 +47,20 @@ add_library(LowLevel STATIC
     cpp/vvector.cpp
 )
 
+add_executable(LowLevelTest
+    test/gtest.cpp
+    test/LowlevelTest.cpp
+)
+
 target_include_directories(LowLevel PUBLIC
     ${BOOST_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+)
+
+target_include_directories(LowLevelTest PUBLIC
+    ${BOOST_INCLUDE_DIR}
+    ${GTEST_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
@@ -49,6 +68,14 @@ target_include_directories(LowLevel PUBLIC
 set_target_properties(LowLevel PROPERTIES VERSION ${CMAKE_PROJECT_VERSION})
 set_target_properties(LowLevel PROPERTIES SOVERSION 3)
 set_target_properties(LowLevel PROPERTIES DEFINE_SYMBOL "")
+
+target_link_libraries(LowLevelTest ${FOUND_GTEST_LIBRARY_PATH} ${FOUND_GTEST_MAIN_LIBRARY_PATH} LowLevel)
+if (MSVC)
+else ()
+target_link_libraries(LowLevelTest pthread)
+endif (MSVC)
+
+add_test(LowLevelTests LowLevelTest)
 
 set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/hssconfig/config.h
