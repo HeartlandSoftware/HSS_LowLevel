@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.0 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.1 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -44,7 +44,7 @@ target_include_directories(LowLevel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
 
-set_target_properties(LowLevel PROPERTIES VERSION 3.18.1.0)
+set_target_properties(LowLevel PROPERTIES VERSION ${CMAKE_PROJECT_VERSION})
 set_target_properties(LowLevel PROPERTIES SOVERSION 3)
 set_target_properties(LowLevel PROPERTIES DEFINE_SYMBOL "")
 
