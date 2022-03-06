@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.0 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.1 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 add_library(LowLevel STATIC
     cpp/colors.c
     cpp/convert.cpp
+    cpp/cpoints.cpp
     cpp/hresult.cpp
     cpp/htree.cpp
     cpp/linklist.cpp
@@ -43,7 +44,7 @@ target_include_directories(LowLevel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
 
-set_target_properties(LowLevel PROPERTIES VERSION 3.18.1.0)
+set_target_properties(LowLevel PROPERTIES VERSION ${CMAKE_PROJECT_VERSION})
 set_target_properties(LowLevel PROPERTIES SOVERSION 3)
 set_target_properties(LowLevel PROPERTIES DEFINE_SYMBOL "")
 
@@ -53,6 +54,7 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/boost_compression.h
     PUBLIC_HEADER include/boost_ll_config.h
     PUBLIC_HEADER include/colors.h
+    PUBLIC_HEADER include/cpoints.h
     PUBLIC_HEADER include/COMInit.h
     PUBLIC_HEADER include/ConversionFactors.h
     PUBLIC_HEADER include/convert.h
