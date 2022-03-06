@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.2 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.3 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
