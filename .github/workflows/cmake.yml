@@ -124,7 +124,7 @@ jobs:
         cd googletest
         mkdir msvc
         cd msvc
-        cmake ../
+        cmake ../ -Dgtest_force_shared_crt=ON
         cmake --build . --config Release
         echo "::set-output name=google_test_include_dir::googletest/googletest/include"
         echo "::set-output name=google_test_library_dir::googletest/msvc/lib/Release"
