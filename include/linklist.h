@@ -156,7 +156,9 @@ class MinList {
 
 	DEVICE __INLINE MinNode *LH_Head() const							{ return lh_Head; };
 	DEVICE __INLINE MinNode *LH_Tail() const							{ return lh_TailPred; };
-	DEVICE std::uint32_t __FASTCALL NodeIndex(const MinNode *Node) const;			// returns index of node on the list, or (std::uint32_t)-1
+
+	DEVICE bool __FASTCALL NodeHasIndex(const MinNode* Node) const;				// returns whether a node is on the list or not
+	DEVICE std::uint32_t __FASTCALL NodeIndex(const MinNode *Node) const;		// returns index of node on the list, or (std::uint32_t)-1
 	DEVICE MinNode * __FASTCALL IndexNode(std::uint32_t index) const;			// return node at 'index'
 
 	DEVICE __INLINE void AddHead(MinNode *Node)							{ Insert(Node, (MinNode *)this); };

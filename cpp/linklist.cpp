@@ -143,6 +143,11 @@ void MinList::Swap(MinNode *node1, MinNode *node2) {
 
 // ***** Basic List Commands *************************************************
 
+bool MinList::NodeHasIndex(const MinNode* Node) const {
+	std::uint32_t idx = NodeIndex(Node);
+	return (idx != (std::uint32_t)-1) ? true : false;
+}
+
 //!Returns the index of *Node
 std::uint32_t MinList::NodeIndex(const MinNode *Node) const {
 	std::uint32_t cnt = 0;
