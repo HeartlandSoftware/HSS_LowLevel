@@ -7,8 +7,8 @@ on:
 
 env:
   BUILD_TYPE: Release
-  JSON_VERSION: 3.7.3
-  BOOST_VERSION: 1.76.0
+  JSON_VERSION: 3.11.2
+  BOOST_VERSION: 1.81.0
 
 jobs:
   build:
@@ -16,10 +16,14 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
+          - ubuntu-22.04
           - windows-2019
         include:
           - os: ubuntu-20.04
             os_version: 20.04
+            build_tool: gcc
+          - os: ubuntu-22.04
+            os_version: 22.04
             build_tool: gcc
           - os: windows-2019
             os_version: 2022
@@ -33,33 +37,33 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - uses: suisei-cn/actions-download-file@v1
+    - uses: suisei-cn/actions-download-file@v1.3.0
       name: Download bithacks.h
       with:
         url: "https://raw.githubusercontent.com/pkrumins/bithacks.h/master/bithacks.h"
         target: third_party/
     
-    - uses: suisei-cn/actions-download-file@v1
+    - uses: suisei-cn/actions-download-file@v1.3.0
       name: Download debug-trap.h
       with:
         url: "https://raw.githubusercontent.com/nemequ/portable-snippets/master/debug-trap/debug-trap.h"
         target: third_party/
     
-    - uses: suisei-cn/actions-download-file@v1
+    - uses: suisei-cn/actions-download-file@v1.3.0
       name: Download propagate_const.h
       with:
         url: "https://raw.githubusercontent.com/jbcoe/propagate_const/master/propagate_const.h"
         target: third_party/
     
-    - uses: suisei-cn/actions-download-file@v1
+    - uses: suisei-cn/actions-download-file@v1.3.0
       name: Download json.hpp
       with:
         url: "https://github.com/nlohmann/json/releases/download/v${{ env.JSON_VERSION }}/json.hpp"
         target: third_party/
 
-    # Retrieve the cache, uses cache@v2
+    # Retrieve the cache, uses cache@v3
     - name: Cache boost
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache-boost
       with:
         # Set the default path as the path to cache
@@ -88,13 +92,13 @@ jobs:
         retention-days: 1
 
     - name: Setup Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         sudo apt install libgtest-dev
 
     - name: Configure CMake Ubuntu
       id: configure-ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         mkdir build
         cd build
@@ -105,13 +109,13 @@ jobs:
         echo "::set-output name=release_version::$APPLICATION_VERSION"
 
     - name: Build Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         cd build/ubuntu
         cmake --build .
 
     - name: Test Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         cd build/ubuntu
         ctest
@@ -149,21 +153,44 @@ jobs:
       run: |
         cd build/windows
         ctest
+    
+    - name: Archive Ubuntu 20 generated files
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: Compress-Archive -DestinationPath build/ubuntu/ubuntu20.04.zip -Path build/ubuntu/libLowLevel.a
 
-    - name: Upload Ubuntu Library
+    - name: Upload Ubuntu 20 Library
       if: matrix.os == 'ubuntu-20.04'
       uses: actions/upload-artifact@v2
       with:
         name: release-libs
-        path: build/ubuntu/libLowLevel.a
+        path: build/ubuntu/ubuntu20.04.zip
         retention-days: 1
+    
+    - name: Archive Ubuntu 22 generated files
+      if: matrix.os == 'ubuntu-22.04'
+      shell: pwsh
+      run: Compress-Archive -DestinationPath build/ubuntu/ubuntu22.04.zip -Path build/ubuntu/libLowLevel.a
 
-    - name: Upload Windows Library
-      if: matrix.os == 'windows-2019'
+    - name: Upload Ubuntu 22 Library
+      if: matrix.os == 'ubuntu-22.04'
       uses: actions/upload-artifact@v2
       with:
         name: release-libs
-        path: build/windows/Release/LowLevel.lib
+        path: build/ubuntu/ubuntu22.04.zip
+        retention-days: 1
+    
+    - name: Archive Windows generated files
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: Compress-Archive -DestinationPath build/windows/windows.zip -Path build/windows/Release/LowLevel.lib
+
+    - name: Upload Windows Library
+      if: matrix.os == 'windows-2019'
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-libs
+        path: build/windows/windows.zip
         retention-days: 1
 
   release:
@@ -198,13 +225,13 @@ jobs:
         tags: true
     
     - name: Download Libraries
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: release-libs
     
     - name: Create Release Notes
       id: build-notes
-      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      uses: mikepenz/release-changelog-builder-action@v3.5.0
       with:
         toTag: ${{ needs.build.outputs.release_version }}
         fromTag: ${{ steps.previoustag.outputs.tag }}
@@ -217,7 +244,8 @@ jobs:
         name: ${{ needs.build.outputs.release_version }}
         body: ${{ steps.build-notes.outputs.changelog }}
         files: |
-          LowLevel.lib
-          libLowLevel.a
+          windows.zip
+          ubuntu22.04.zip
+          ubuntu20.04.zip
           includes.zip
         tag_name: refs/tags/${{ needs.build.outputs.release_version }}
