@@ -7,7 +7,7 @@
 #endif
 #endif
 
-#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>

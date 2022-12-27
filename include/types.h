@@ -13,6 +13,7 @@
 
 #ifdef __cplusplus
 #include <cstdint>
+#include <cstdio>
 #include <cassert>
 #if defined(_NO_MFC) || defined(__GNUC__)
 #include "hresult.h"
@@ -99,9 +100,9 @@
 			#define weak_assert(val) ASSERT(val)
 		#else
 			#ifdef ASSERT_BREAK
-				#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); psnip_dbg_assert(false); } } while(0)
+				#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); psnip_dbg_assert(false); } } while(0)
 			#else
-				#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); } } while(0)
+				#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); } } while(0)
 			#endif // ASSERT_BREAK
 		#endif // __AFX_H__
 	#endif // NDEBUG
@@ -109,9 +110,9 @@
 	#define comment_assert(val, comment) assert(((void)(comment), (val)))
 	#ifdef _DEBUG
 		#ifdef ASSERT_BREAK
-			#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); psnip_dbg_assert(false); } } while(0)
+			#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); psnip_dbg_assert(false); } } while(0)
 		#else
-			#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); } } while(0)
+			#define weak_assert(val) do { if (!(val)) { fprintf(stderr, "file %s: line %d (%s): `%s` failed.\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, #val); } } while(0)
 		#endif // ASSERT_BREAK
 	#else
 		#define weak_assert(val) ((void)0)
@@ -202,17 +203,14 @@ typedef void *APTR;
 #endif
 
 #ifdef __GNUC__
-#define __FASTCALL
 #define __CRTDECL
 #define __cdecl
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #elif defined(__INTEL_LLVM_COMPILER)
-#define __FASTCALL __stdcall
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #else
-#define __FASTCALL __stdcall
 #define TYPENAME typename
 #define FRIEND_TYPENAME typename
 #endif
@@ -350,3 +348,11 @@ template <typename T> const T max(const T& a, const T& b) { return (b > a) ? b :
 #endif
 #endif
 
+#ifdef __cplusplus
+template <class _type, class _itype>
+static _type dynamic_cast_assert(_itype* aptr) {
+	_type tptr = dynamic_cast<_type>(aptr);
+	weak_assert(tptr != nullptr);
+	return tptr;
+}
+#endif

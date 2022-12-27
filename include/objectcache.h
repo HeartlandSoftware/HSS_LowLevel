@@ -134,9 +134,9 @@ class ObjectCacheBase {
 	APTR						m_first;
 	bool						m_forceZeroed, m_autoAdjust;
 
-	DEVICE CMemoryBlock * __FASTCALL allocSet();
-	DEVICE void __FASTCALL deleteSet(CMemoryBlock *block);
-	DEVICE void __FASTCALL extractFromSet(CMemoryBlock *mem, std::uint32_t &num, MinList &set);
+	DEVICE CMemoryBlock * allocSet();
+	DEVICE void deleteSet(CMemoryBlock *block);
+	DEVICE void extractFromSet(CMemoryBlock *mem, std::uint32_t &num, MinList &set);
 
     public:
 	DEVICE ObjectCacheBase(size_t object_size, size_t block_size, bool force_zeroed, bool auto_adjust = true, size_t memory_align = 4);
