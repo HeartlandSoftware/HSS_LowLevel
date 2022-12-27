@@ -66,7 +66,7 @@ static std::string decodestr(const TCHAR *str) {
 ExportOptions::ExportOptions(const TCHAR *group_name) {
 	std::string tmp, buf, defaultstr = encodestr(_T(","));
 #ifdef _MSC_VER
-	if (group_name)
+	if ((group_name) && (AfxGetApp()))
 		tmp = AfxGetApp()->GetProfileString(group_name, _T("Column Delimiter"), defaultstr.c_str());
 	else
 #endif
@@ -78,8 +78,10 @@ ExportOptions::ExportOptions(const TCHAR *group_name) {
 
 void ExportOptions::SaveToIniFile(const TCHAR *group_name) const {
 #ifdef _MSC_VER
-	std::string tmp = encodestr(GetExportDelimiter());
-	AfxGetApp()->WriteProfileString(group_name, _T("Column Delimiter"), tmp.c_str());
+	if (AfxGetApp()) {
+		std::string tmp = encodestr(GetExportDelimiter());
+		AfxGetApp()->WriteProfileString(group_name, _T("Column Delimiter"), tmp.c_str());
+	}
 #endif
 }
 
