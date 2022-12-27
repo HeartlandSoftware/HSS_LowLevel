@@ -202,17 +202,14 @@ typedef void *APTR;
 #endif
 
 #ifdef __GNUC__
-#define __FASTCALL
 #define __CRTDECL
 #define __cdecl
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #elif defined(__INTEL_LLVM_COMPILER)
-#define __FASTCALL __stdcall
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #else
-#define __FASTCALL __stdcall
 #define TYPENAME typename
 #define FRIEND_TYPENAME typename
 #endif

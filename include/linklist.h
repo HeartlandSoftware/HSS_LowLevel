@@ -157,31 +157,31 @@ class MinList {
 	DEVICE __INLINE MinNode *LH_Head() const							{ return lh_Head; };
 	DEVICE __INLINE MinNode *LH_Tail() const							{ return lh_TailPred; };
 
-	DEVICE bool __FASTCALL NodeHasIndex(const MinNode* Node) const;				// returns whether a node is on the list or not
-	DEVICE std::uint32_t __FASTCALL NodeIndex(const MinNode *Node) const;		// returns index of node on the list, or (std::uint32_t)-1
-	DEVICE MinNode * __FASTCALL IndexNode(std::uint32_t index) const;			// return node at 'index'
+	DEVICE bool NodeHasIndex(const MinNode* Node) const;				// returns whether a node is on the list or not
+	DEVICE std::uint32_t NodeIndex(const MinNode *Node) const;		// returns index of node on the list, or (std::uint32_t)-1
+	DEVICE MinNode * IndexNode(std::uint32_t index) const;			// return node at 'index'
 
 	DEVICE __INLINE void AddHead(MinNode *Node)							{ Insert(Node, (MinNode *)this); };
 	DEVICE __INLINE void AddTail(MinNode *Node)							{ Insert(Node, lh_TailPred); };
-    DEVICE  void __FASTCALL Insert(MinNode *New, MinNode *Where);
+    DEVICE  void Insert(MinNode *New, MinNode *Where);
 	DEVICE __INLINE void InsertIndex(MinNode *New, std::uint32_t index)	{ if (index >= GetCount()) AddTail(New); else { MinNode *mn = IndexNode(index); Insert(New, mn->LN_Pred()); } };
 
-	DEVICE MinNode * __FASTCALL RemHead();
-	DEVICE MinNode * __FASTCALL RemTail();
-	DEVICE void __FASTCALL Remove(MinNode *Node);
-	DEVICE void __FASTCALL Replace(MinNode *Remove, MinNode *Insert);
-	DEVICE void __FASTCALL Swap(MinNode *node1, MinNode *node2);
+	DEVICE MinNode * RemHead();
+	DEVICE MinNode * RemTail();
+	DEVICE void Remove(MinNode *Node);
+	DEVICE void Replace(MinNode *Remove, MinNode *Insert);
+	DEVICE void Swap(MinNode *node1, MinNode *node2);
 
 
-	DEVICE void __FASTCALL AppendList(MinList *list);				// lots quicker than just removing and adding individually
-	DEVICE void __FASTCALL AppendFromList(MinList *list, MinNode *left, MinNode *right, bool could_wrap);	// left and right are inclusive
-	DEVICE void __FASTCALL InsertList(MinList *list, MinNode *Where);		// same as append, but not inserting at the end of the list
-	DEVICE void __FASTCALL InsertFromList(MinList *list, MinNode *left, MinNode *right, bool could_wrap, MinNode *Where);	// points are inserted after 'Where'
+	DEVICE void AppendList(MinList *list);				// lots quicker than just removing and adding individually
+	DEVICE void AppendFromList(MinList *list, MinNode *left, MinNode *right, bool could_wrap);	// left and right are inclusive
+	DEVICE void InsertList(MinList *list, MinNode *Where);		// same as append, but not inserting at the end of the list
+	DEVICE void InsertFromList(MinList *list, MinNode *left, MinNode *right, bool could_wrap, MinNode *Where);	// points are inserted after 'Where'
 
-	DEVICE void __FASTCALL MoveHead(MinNode *NewHead);				// takes nodes from the start of the list up to "NewHead" and puts them, in order, onto the end of the list
+	DEVICE void MoveHead(MinNode *NewHead);				// takes nodes from the start of the list up to "NewHead" and puts them, in order, onto the end of the list
 
-	DEVICE void __FASTCALL ReverseOrder(reverser_callback fcn, APTR parm);
-	DEVICE void __FASTCALL ReverseOrder(MinNode *start, MinNode *end, bool could_wrap, reverser_callback fcn, APTR parm);
+	DEVICE void ReverseOrder(reverser_callback fcn, APTR parm);
+	DEVICE void ReverseOrder(MinNode *start, MinNode *end, bool could_wrap, reverser_callback fcn, APTR parm);
 											// fcn is called for each node (start and end inclusive) being reversed in direction, don't look forward or
 											// back on the list at the time, though.  could_wrap is just for a (little) bit of efficiency if you know that
 											// 'end' is after 'start' on the list
@@ -196,10 +196,10 @@ class MinList {
 	MinListIterator<MinNode> end() { return MinListIterator<MinNode>(LH_Tail()->LN_Succ()); }
 
 //    #ifdef _DEBUG
-	DEVICE bool __FASTCALL VerifyListCount() const;
+	DEVICE bool VerifyListCount() const;
 //    #endif
 
-	static DEVICE MinList * __FASTCALL FindList(const MinNode *node);		// NOTE this is only intended for debugging purposes to find out where a node is in case it's been 'lost'.  It'll be
+	static DEVICE MinList * FindList(const MinNode *node);		// NOTE this is only intended for debugging purposes to find out where a node is in case it's been 'lost'.  It'll be
 };											// correct, but not a good way to manage linked lists.  If the node isn't on a list, then this will most likely crash.
 
 
@@ -225,12 +225,12 @@ class List : public MinList {
 	List() = default;
 	List(List &&list) : MinList((MinList &&)list)						{ };
 
-	DEVICE void __FASTCALL InsertAlphabetical(Node *node, bool case_sensitive = true);
+	DEVICE void InsertAlphabetical(Node *node, bool case_sensitive = true);
 
-    	DEVICE Node * __FASTCALL FindName(const TCHAR *Name, bool case_sensitive = true) const;
-	DEVICE Node * __FASTCALL FindNextName(Node *from, const TCHAR *Name, bool case_sensitive = true) const;
-	DEVICE Node * __FASTCALL FindPredName(Node *from, const TCHAR *Name, bool case_sensitive = true) const;
-	DEVICE Node * __FASTCALL FindLastName(const TCHAR *Name, bool case_sensitive = true) const;
+    	DEVICE Node * FindName(const TCHAR *Name, bool case_sensitive = true) const;
+	DEVICE Node * FindNextName(Node *from, const TCHAR *Name, bool case_sensitive = true) const;
+	DEVICE Node * FindPredName(Node *from, const TCHAR *Name, bool case_sensitive = true) const;
+	DEVICE Node * FindLastName(const TCHAR *Name, bool case_sensitive = true) const;
     	
 	DEVICE __INLINE Node *IndexNode(std::uint32_t index) const			{ return (Node *)MinList::IndexNode(index); };
 
@@ -249,12 +249,12 @@ public:
 	SList()	= default;
 	SList(SList &&list) : MinList((MinList &&)list)						{ };
 
-	DEVICE void __FASTCALL InsertAlphabetical(SNode *node, bool case_sensitive = true);
+	DEVICE void InsertAlphabetical(SNode *node, bool case_sensitive = true);
 
-	DEVICE SNode * __FASTCALL FindName(const tstring &Name, bool case_sensitive = true) const;
-	DEVICE SNode * __FASTCALL FindNextName(SNode *from, const tstring &Name, bool case_sensitive = true) const;
-	DEVICE SNode * __FASTCALL FindPredName(SNode *from, const tstring &Name, bool case_sensitive = true) const;
-	DEVICE SNode * __FASTCALL FindLastName(const tstring &Name, bool case_sensitive = true) const;
+	DEVICE SNode * FindName(const tstring &Name, bool case_sensitive = true) const;
+	DEVICE SNode * FindNextName(SNode *from, const tstring &Name, bool case_sensitive = true) const;
+	DEVICE SNode * FindPredName(SNode *from, const tstring &Name, bool case_sensitive = true) const;
+	DEVICE SNode * FindLastName(const tstring &Name, bool case_sensitive = true) const;
 
 	DEVICE __INLINE SNode *IndexNode(std::uint32_t index) const			{ return (SNode *)MinList::IndexNode(index); };
 
@@ -274,12 +274,12 @@ class PtrList : public MinList {				// use RefList instead
 	PtrList() = default;
 	PtrList(PtrList &&list) : MinList((MinList &&)list)					{ };
 
-	DEVICE void __FASTCALL InsertAscending(PtrNode *node);
+	DEVICE void InsertAscending(PtrNode *node);
 
-	DEVICE PtrNode * __FASTCALL FindPtr(const APTR ptr) const;
-	DEVICE PtrNode * __FASTCALL FindNextPtr(const PtrNode *continue_from, const APTR ptr) const;		// this will test continue_from
-	DEVICE std::uint32_t __FASTCALL FindPtrIndex(const APTR ptr) const;
-	DEVICE std::uint32_t __FASTCALL FindNextPtrIndex(const std::uint32_t continue_from, const APTR ptr) const;
+	DEVICE PtrNode * FindPtr(const APTR ptr) const;
+	DEVICE PtrNode * FindNextPtr(const PtrNode *continue_from, const APTR ptr) const;		// this will test continue_from
+	DEVICE std::uint32_t FindPtrIndex(const APTR ptr) const;
+	DEVICE std::uint32_t FindNextPtrIndex(const std::uint32_t continue_from, const APTR ptr) const;
     	
 	DEVICE __INLINE PtrNode *IndexNode(std::uint32_t index) const		{ return (PtrNode *)MinList::IndexNode(index); };
 
