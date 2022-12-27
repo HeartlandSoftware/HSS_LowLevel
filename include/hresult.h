@@ -108,8 +108,14 @@ namespace ResultCodes
 	constexpr bool MethodFatal(HRESULT result) { return ((result) < 0) && (result | ERROR_FATAL_BIT); }
 }
 
-#define SUCCEEDED(x) ResultCodes::MethodSuccess(x)
-#define FAILED(x) ResultCodes::MethodFailed(x)
+template <class T> bool SUCCEEDED(T x) {
+	static_assert(std::is_same<HRESULT, T>::value, "SUCCEEDED isn't passed HRESULT");
+	return ResultCodes::MethodSuccess(x);
+}
+template <class T> bool FAILED(T x) {
+	static_assert(std::is_same<HRESULT, T>::value, "FAILED isn't passed HRESULT");
+	return ResultCodes::MethodFailed(x);
+}
 
 //macros for backwards compatibility
 #ifndef _SKIP_HRESULT_OLD
