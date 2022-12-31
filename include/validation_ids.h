@@ -115,7 +115,7 @@ namespace validation
 		/// </summary>
 		constexpr std::string_view missing_fuels = "Input.CWFGM.GridProto.CwfgmFuelMap:Missing";
 		/// <summary>
-		/// A user specified file doesn't contain any fuel information.
+		/// A user specified file doesn't contain any fuel grid information.
 		/// </summary>
 		constexpr std::string_view missing_fuel_grid = "Input.CWFGM.GridProto.CwfgmGrid:Missing";
 		/// <summary>
@@ -123,17 +123,21 @@ namespace validation
 		/// </summary>
 		constexpr std::string_view unknown_fuel = "Input.CWFGM.GridProto.CwfgmGrid:UnknownFuel";
 		/// <summary>
-		/// A user specified file doesn't contain any weather information.
+		/// A user specified file doesn't contain any weather station information.
 		/// </summary>
 		constexpr std::string_view missing_weather = "Input.CWFGM.ProjectProto.StationCollection:Missing";
 		/// <summary>
-		/// A user specified file doesn't contain any weather information.
+		/// A user specified file doesn't contain any ignition information.
 		/// </summary>
 		constexpr std::string_view missing_ignitions = "Input.CWFGM.ProjectProto.FireCollection:Missing";
 		/// <summary>
-		/// A user specified file doesn't contain any weather information.
+		/// A user specified file doesn't contain any scenario information.
 		/// </summary>
 		constexpr std::string_view missing_scenarios = "Input.CWFGM.ProjectProto.ScenarioCollection:Missing";
+		/// <summary>
+		/// A user specified file contains at least one invalid scenario / grid export combination.
+		/// </summary>
+		constexpr std::string_view invalid_scenario_options = "Input.CWFGM.ProjectProto.ScenarioCollection.Scenario:InvalidOptions";
 		/// <summary>
 		/// The object doesn't have the required name, used for identification.
 		/// </summary>
