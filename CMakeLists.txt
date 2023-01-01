@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (LowLevel VERSION 3.18.1.7 DESCRIPTION "Low Level Structures Library")
+project (LowLevel VERSION 3.18.1.8 DESCRIPTION "Low Level Structures Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -31,8 +31,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 add_library(LowLevel STATIC
     cpp/AfxIniSettings.cpp
     cpp/colors.c
+    cpp/comcodes.cpp
     cpp/convert.cpp
     cpp/cpoints.cpp
+    cpp/Dlgcnvt.cpp
     cpp/Exprtopt.cpp
     cpp/hresult.cpp
     cpp/htree.cpp
@@ -40,6 +42,8 @@ add_library(LowLevel STATIC
     cpp/linklist.noclang.cpp
     cpp/misc.c
     cpp/objectcache.cpp
+    cpp/pevents.cpp
+    cpp/propsysreplacement.cpp
     cpp/str_printf.cpp
     cpp/tstring.cpp
     cpp/validation_object.cpp
@@ -84,6 +88,7 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/boost_compression.h
     PUBLIC_HEADER include/boost_ll_config.h
     PUBLIC_HEADER include/colors.h
+    PUBLIC_HEADER include/comcodes.h
     PUBLIC_HEADER include/cpoints.h
     PUBLIC_HEADER include/COMInit.h
     PUBLIC_HEADER include/ConversionFactors.h
@@ -105,6 +110,8 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/objectcache.inl
     PUBLIC_HEADER include/out_helper.h
     PUBLIC_HEADER include/propagate_const.h
+    PUBLIC_HEADER include/propsysreplacement.h
+    PUBLIC_HEADER include/StatsConfig.h
     PUBLIC_HEADER include/stdchar.h
     PUBLIC_HEADER include/str_printf.h
     PUBLIC_HEADER include/tstring.h
