@@ -26,7 +26,7 @@
 #endif					// to make this class as small as possible
 
 class UnitConversion {
-    protected:
+protected:
 	UnitConvert::STORAGE_UNIT	m_small_measure_display,
 								m_small_distance_display,
 								m_distance_display,
@@ -44,7 +44,7 @@ class UnitConversion {
 								m_mass_area_display,		// use the high order word to store the mass, and the low order word to store the area
 								m_power_display;
 
-    public:
+public:
 	UnitConversion(const TCHAR *group_name);
 	void SaveToIniFile(const TCHAR *group_name) const;
 
@@ -93,20 +93,6 @@ class UnitConversion {
 #endif
 
 };
-
-
-#if _DLL
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad = false);
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad = false);
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, float& def_value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad = false);
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, double& def_value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad = false);
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, float& value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, double& value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, float& value, float& def_value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, double& value, double& def_value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format);
-#endif
 
 #ifdef HSS_SHOULD_PRAGMA_PACK
 #pragma pack(pop)			// go back to whatever the project

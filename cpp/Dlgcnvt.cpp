@@ -18,16 +18,7 @@
 
 #include "types.h"
 #include "Dlgcnvt.h"
-#if _DLL
-#include "dlgflt.h"
-#include "cwinapp.h"
-#endif
 #include <float.h>              // floating point precision
-#include "angles.h"
-
-#ifdef AFX_CORE3_SEG
-#pragma code_seg(AFX_CORE3_SEG)
-#endif
 
 #if defined(_DEBUG) && defined(_MSC_VER)
 #undef THIS_FILE
@@ -44,7 +35,7 @@ UnitConversion::UnitConversion(const TCHAR *group_name)
 {
 #ifdef _MSC_VER
 	if (group_name)
-    {
+  {
 		m_small_measure_display = (UnitConvert::STORAGE_UNIT)((CWinAppExt *)AfxGetApp())->GetProfileULongLong(group_name, _T("Small Measure Display 4"), STORAGE_FORMAT_MM - STORAGE_DISTANCE_START);
 		m_small_distance_display = (UnitConvert::STORAGE_UNIT)((CWinAppExt *)AfxGetApp())->GetProfileULongLong(group_name, _T("Small Distance Display 4"), STORAGE_FORMAT_M - STORAGE_DISTANCE_START);
 		m_distance_display = (UnitConvert::STORAGE_UNIT)((CWinAppExt *)AfxGetApp())->GetProfileULongLong(group_name, _T("Distance Display 4"), STORAGE_FORMAT_KM - STORAGE_DISTANCE_START);
@@ -83,9 +74,9 @@ UnitConversion::UnitConversion(const TCHAR *group_name)
 		m_intensity_display += ((UnitConvert::STORAGE_UNIT)STORAGE_ENERGY_START << 0x20);
 		m_intensity_display += STORAGE_DISTANCE_START;
 	}
-    else
+  else
 #endif
-    {
+  {
 		m_small_measure_display = STORAGE_FORMAT_MM;
 		m_small_distance_display = STORAGE_FORMAT_M;
 		m_distance_display = STORAGE_FORMAT_KM;
@@ -278,83 +269,3 @@ UnitConvert::STORAGE_UNIT UnitConversion::AngleDisplay(UnitConvert::STORAGE_UNIT
 	else	AfxThrowNotSupportedException();	// asked for a conversion not supported
 	return m_angle_display;
 }
-
-
-#if _DLL
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	float tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	double tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad) {
-	float tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, precision, pad);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format, bool pad) {
-	double tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, precision, pad);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, float& value, float& def_value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format,
-	bool pad) {
-	float tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	float tmp_value1 = UnitConversion::ConvertUnit(def_value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, tmp_value1, precision, pad);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange* pDX, int nIDC, double& value, double& def_value, int precision, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format,
-	bool pad) {
-	double tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	double tmp_value1 = UnitConversion::ConvertUnit(def_value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, tmp_value1, precision, pad);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, float& value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	float tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, format);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, double& value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	double tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, format);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, float& value, float& def_value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	float tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	float tmp_value1 = UnitConversion::ConvertUnit(def_value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, tmp_value1, format);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-
-void AFXAPI DDX_TextConvert(CDataExchange *pDX, int nIDC, double& value, double& def_value, const char *format, UnitConvert::STORAGE_UNIT storage_format, UnitConvert::STORAGE_UNIT display_format) {
-	double tmp_value = UnitConversion::ConvertUnit(value, storage_format, display_format);
-	double tmp_value1 = UnitConversion::ConvertUnit(def_value, storage_format, display_format);
-	DDX_Text(pDX, nIDC, tmp_value, tmp_value1, format);
-	value = UnitConversion::ConvertUnit(tmp_value, display_format, storage_format);
-}
-
-#endif
