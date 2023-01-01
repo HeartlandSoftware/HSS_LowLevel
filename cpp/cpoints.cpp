@@ -12,8 +12,8 @@ If using in your applications, please mention author in credits for your app.
 class CRenderTarget;
 #include <afx.h>
 #endif
-#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
 #include "intel_check.h"
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>
