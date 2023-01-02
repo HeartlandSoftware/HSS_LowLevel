@@ -16,23 +16,6 @@
 #pragma managed(push, off)
 #endif
 
-#ifndef _NO_MFC
-
-#include <afxwin.h>
-#include "types.h"
-#include <propvarutil.h>
-
-HRESULT VariantToBoolean_(const VARIANT &varIn, BOOL *retval);
-HRESULT VariantToInt16_(const VARIANT &varIn, SHORT *retval);
-HRESULT VariantToInt32_(const VARIANT &varIn, LONG *retval);
-HRESULT VariantToInt64_(const VARIANT &varIn, LONGLONG *retval);
-HRESULT VariantToUInt16_(const VARIANT &varIn, USHORT *retval);
-HRESULT VariantToUInt32_(const VARIANT &varIn, ULONG *retval);
-HRESULT VariantToUInt64_(const VARIANT &varIn, ULONGLONG *retval);
-HRESULT VariantToDouble_(const VARIANT &varIn, DOUBLE *pdblRet);
-
-#endif
-
 #if __cplusplus>=201700 || _MSVC_LANG >= 201703
 #include <cstdint>
 #include <variant>
