@@ -24,7 +24,7 @@ HRESULT VariantToBoolean_(const VARIANT &varIn, BOOL *retval) {
 	case VT_UI4:	*retval = (varIn.ulVal) ? TRUE : FALSE;		break;
 	case VT_UI8:	*retval = (varIn.ullVal) ? TRUE : FALSE;	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = FALSE;
 		return E_FAIL;
 	}
@@ -47,7 +47,7 @@ HRESULT VariantToInt16_(const VARIANT &varIn, SHORT *retval) {
 	case VT_R8:	*retval = (SHORT)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (SHORT)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -70,7 +70,7 @@ HRESULT VariantToInt32_(const VARIANT &varIn, LONG *retval) {
 	case VT_R8:	*retval = (LONG)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (LONG)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -93,7 +93,7 @@ HRESULT VariantToInt64_(const VARIANT &varIn, LONGLONG *retval) {
 	case VT_R8:	*retval = (LONGLONG)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (LONGLONG)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -116,7 +116,7 @@ HRESULT VariantToUInt16_(const VARIANT &varIn, USHORT *retval) {
 	case VT_R8:	*retval = (USHORT)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (USHORT)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -139,7 +139,7 @@ HRESULT VariantToUInt32_(const VARIANT &varIn, ULONG *retval) {
 	case VT_R8:	*retval = (ULONG)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (ULONG)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -162,7 +162,7 @@ HRESULT VariantToUInt64_(const VARIANT &varIn, ULONGLONG *retval) {
 	case VT_R8:	*retval = (ULONGLONG)(varIn.dblVal + 0.5);	break;
 	case VT_R4:	*retval = (ULONGLONG)(varIn.fltVal + 0.5);	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*retval = 0;
 		return E_FAIL;
 	}
@@ -184,7 +184,7 @@ HRESULT VariantToDouble_(const VARIANT &varIn, DOUBLE *pdblRet) {
 	case VT_UI4:	*pdblRet = (double)varIn.ulVal;		break;
 	case VT_UI8:	*pdblRet = (double)varIn.ullVal;	break;
 	default:
-		ASSERT(0);
+		weak_assert(false);
 		*pdblRet = 0.0;
 		return E_FAIL;
 	}
@@ -223,7 +223,7 @@ bool variantToBoolean(const NumericVariant &varIn, bool *retval) {
 		*retval = (std::get<std::uint64_t>(varIn)) ? true : false;
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = false;
 		return false;
 	}
@@ -268,7 +268,7 @@ bool variantToInt8(const NumericVariant &varIn, std::int8_t *retval) {
 		*retval = (std::int8_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -313,7 +313,7 @@ bool variantToInt16(const NumericVariant &varIn, std::int16_t *retval) {
 		*retval = (std::int16_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -358,7 +358,7 @@ bool variantToInt32(const NumericVariant &varIn, std::int32_t *retval) {
 		*retval = (std::int32_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -403,7 +403,7 @@ bool variantToInt64(const NumericVariant &varIn, std::int64_t *retval) {
 		*retval = (std::int64_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -448,7 +448,7 @@ bool variantToUInt8(const NumericVariant &varIn, std::uint8_t *retval) {
 		*retval = (std::uint8_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -493,7 +493,7 @@ bool variantToUInt16(const NumericVariant &varIn, std::uint16_t *retval) {
 		*retval = (std::uint16_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -538,7 +538,7 @@ bool variantToUInt32(const NumericVariant &varIn, std::uint32_t *retval) {
 		*retval = (std::uint32_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -583,7 +583,7 @@ bool variantToUInt64(const NumericVariant &varIn, std::uint64_t *retval) {
 		*retval = (std::uint64_t)(std::get<double>(varIn) + 0.5);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*retval = 0;
 		return false;
 	}
@@ -625,7 +625,7 @@ bool variantToFloat(const NumericVariant &varIn, float *pdblRet) {
 		*pdblRet = (float)std::get<std::uint64_t>(varIn);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*pdblRet = 0.0;
 		return false;
 	}
@@ -667,7 +667,7 @@ bool variantToDouble(const NumericVariant &varIn, double *pdblRet) {
 		*pdblRet = (double)std::get<std::uint64_t>(varIn);
 
 	else {
-		weak_assert(0);
+		weak_assert(false);
 		*pdblRet = 0.0;
 		return false;
 	}
