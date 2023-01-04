@@ -44,7 +44,7 @@ ObjectCacheBase::~ObjectCacheBase() {
 	while ((mem = m_memoryList.RemHead())) {
 
     #ifdef DEBUG
-		weak_assert(0);						// this means not all the elements were "free"'d
+		weak_assert(false);						// this means not all the elements were "free"'d
     #endif
 
 //		delete [] mem->m_start;
@@ -134,7 +134,7 @@ void ObjectCacheBase::_Delete(APTR object) {
 	}
 /*
     #ifdef DEBUG
-	weak_assert(0);							// this means that we were asked to delete an object that we didn't create
+	weak_assert(false);							// this means that we were asked to delete an object that we didn't create
     #endif
 */	::operator delete(object);
 }

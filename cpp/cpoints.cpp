@@ -194,7 +194,7 @@ int CPointsCollection::InsertPoint2(int index, double x, double y, COLORREF colo
 {
 	if (index<0 || index>GetSize())
     {
-		weak_assert(0);
+		weak_assert(false);
 		return -1;
 	}
 	XYC_Point ssp(x, y, color, pointColor, mode);
