@@ -1,13 +1,20 @@
-/*	TYPES.H
-//
-//	Started:	November 11, 1992
-//	Last Modified:	October 3, 2019
-//	Version 1.2
-//	March 18, 2000:		changed to be more "compatible" with MS-Windows rather than ancient
-//				Amiga-centric stuff - a bit overdue but 'bout time
-//	December 8, 2004:	changed to make it more 64-bit "happy" but shouldn't affect any 32-bit code
-//	June 17, 2010:		CUDA-centric modifications
-*/
+/**
+ * types.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #pragma once
 
@@ -17,6 +24,8 @@
 #include <cassert>
 #if defined(_NO_MFC) || defined(__GNUC__)
 #include "hresult.h"
+#else
+#include <afx.h>
 #endif
 #else
 #include <stdint.h>
@@ -191,7 +200,7 @@ typedef unsigned char TBYTE , *PTBYTE ;
 typedef void *APTR;
 
 #ifndef __INLINE
-#define __INLINE __inline
+#define __INLINE
 #endif
 
 #ifdef __CUDACC__
@@ -208,6 +217,9 @@ typedef void *APTR;
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #elif defined(__INTEL_LLVM_COMPILER)
+#define TYPENAME
+#define FRIEND_TYPENAME class
+#elif (_MSC_VER >= 1930)
 #define TYPENAME
 #define FRIEND_TYPENAME class
 #else

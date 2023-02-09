@@ -1,11 +1,23 @@
-//	dlgcnvt.h
-//
-//	By Robert W. Bryce
-//	Started:	April 3, 2000
-//	Last Modified:	January 13, 2009
+/**
+ * Dlgcnvt.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-#ifndef __DLGCNVT_H
-#define __DLGCNVT_H
+#ifndef __HSS_DLGCNVT_H
+#define __HSS_DLGCNVT_H
 
 #if _DLL
 #include <afxwin.h>
@@ -67,29 +79,29 @@ public:
 	UnitConvert::STORAGE_UNIT IntensityDisplay(UnitConvert::STORAGE_UNIT mode);				// fire intensities
 	UnitConvert::STORAGE_UNIT PowerDisplay(UnitConvert::STORAGE_UNIT mode);					// Power (a subset of the energy units)
 
-	__INLINE UnitConvert::STORAGE_UNIT SmallMeasureDisplay() const		{ return m_small_measure_display; };
-	__INLINE UnitConvert::STORAGE_UNIT SmallDistanceDisplay() const		{ return m_small_distance_display; };
-	__INLINE UnitConvert::STORAGE_UNIT DistanceDisplay() const			{ return m_distance_display; };
-	__INLINE UnitConvert::STORAGE_UNIT AltDistanceDisplay() const		{ return m_alt_distance_display; };
-	__INLINE UnitConvert::STORAGE_UNIT AreaDisplay() const				{ return m_area_display; };
-	__INLINE UnitConvert::STORAGE_UNIT VolumeDisplay() const			{ return m_volume_display; };
-	__INLINE UnitConvert::STORAGE_UNIT TempDisplay() const				{ return m_temp_display; };
-	__INLINE UnitConvert::STORAGE_UNIT MassDisplay() const				{ return m_mass_display; };
-	__INLINE UnitConvert::STORAGE_UNIT MassAreaDisplay() const			{ return m_mass_area_display; };
-	__INLINE UnitConvert::STORAGE_UNIT EnergyDisplay() const			{ return m_energy_display; };
-	__INLINE UnitConvert::STORAGE_UNIT AngleDisplay() const				{ return m_angle_display; };
-	__INLINE UnitConvert::STORAGE_UNIT VelocityDisplay() const			{ return m_velocity_display; };
-	__INLINE UnitConvert::STORAGE_UNIT AltVelocityDisplay() const		{ return m_alt_velocity_display; };
-	__INLINE UnitConvert::STORAGE_UNIT CoordinateDisplay() const		{ return m_coordinate_display; };
-	__INLINE UnitConvert::STORAGE_UNIT IntensityDisplay() const			{ return m_intensity_display; };
-	__INLINE UnitConvert::STORAGE_UNIT PowerDisplay() const				{ return m_power_display; }
+	UnitConvert::STORAGE_UNIT SmallMeasureDisplay() const		{ return m_small_measure_display; };
+	UnitConvert::STORAGE_UNIT SmallDistanceDisplay() const		{ return m_small_distance_display; };
+	UnitConvert::STORAGE_UNIT DistanceDisplay() const			{ return m_distance_display; };
+	UnitConvert::STORAGE_UNIT AltDistanceDisplay() const		{ return m_alt_distance_display; };
+	UnitConvert::STORAGE_UNIT AreaDisplay() const				{ return m_area_display; };
+	UnitConvert::STORAGE_UNIT VolumeDisplay() const			{ return m_volume_display; };
+	UnitConvert::STORAGE_UNIT TempDisplay() const				{ return m_temp_display; };
+	UnitConvert::STORAGE_UNIT MassDisplay() const				{ return m_mass_display; };
+	UnitConvert::STORAGE_UNIT MassAreaDisplay() const			{ return m_mass_area_display; };
+	UnitConvert::STORAGE_UNIT EnergyDisplay() const			{ return m_energy_display; };
+	UnitConvert::STORAGE_UNIT AngleDisplay() const				{ return m_angle_display; };
+	UnitConvert::STORAGE_UNIT VelocityDisplay() const			{ return m_velocity_display; };
+	UnitConvert::STORAGE_UNIT AltVelocityDisplay() const		{ return m_alt_velocity_display; };
+	UnitConvert::STORAGE_UNIT CoordinateDisplay() const		{ return m_coordinate_display; };
+	UnitConvert::STORAGE_UNIT IntensityDisplay() const			{ return m_intensity_display; };
+	UnitConvert::STORAGE_UNIT PowerDisplay() const				{ return m_power_display; }
 
-	static __INLINE float ConvertUnit(float value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format)		{ return UnitConvert::convertUnit(value, to_format, from_format); };	// **** note reversal of parmeter order
-	static __INLINE double ConvertUnit(double value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format)	{ return UnitConvert::convertUnit(value, to_format, from_format); };
-	static __INLINE std::string UnitName(UnitConvert::STORAGE_UNIT format, bool short_format)										{ return UnitConvert::UnitName(format, short_format); }
+	static float ConvertUnit(float value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format);	// **** note reversal of parmeter order
+	static double ConvertUnit(double value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format);
+	static std::string UnitName(UnitConvert::STORAGE_UNIT format, bool short_format);
 
 #if _DLL
-	static __INLINE CString CUnitName(UnitConvert::STORAGE_UNIT format, bool short_format)											{ return CString(UnitConvert::UnitName(format, short_format).c_str()); }
+	static CString CUnitName(UnitConvert::STORAGE_UNIT format, bool short_format)											{ return CString(UnitConvert::UnitName(format, short_format).c_str()); }
 #endif
 
 };
@@ -106,4 +118,3 @@ public:
 #endif					// settings are...
 
 #endif
-

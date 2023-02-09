@@ -1,9 +1,20 @@
-//    VVECTOR.H
-//
-//    Started:       November 12, 2008
-//    Last Modified: November 12, 2008
-//    Version 1.0
-//    By Robert W. Bryce
+/**
+ * vvector.h
+ *
+ * Copyright 2008-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #pragma once
 
@@ -30,8 +41,8 @@ class alignas(8) vvector_base {
 	// Vector element = node in LinkList
 	class vvector_element : public MinNode {
 	    public:
-		__INLINE vvector_element *LN_Succ() const				{ return (vvector_element *)MinNode::LN_Succ(); };
-		__INLINE vvector_element *LN_Pred() const				{ return (vvector_element *)MinNode::LN_Pred(); };
+		vvector_element *LN_Succ() const				{ return (vvector_element *)MinNode::LN_Succ(); };
+		vvector_element *LN_Pred() const				{ return (vvector_element *)MinNode::LN_Pred(); };
 		std::uint8_t	*m_memory;		// pointer to a chunk of memory
 		size_t			m_memUsed;		// amount of memory used in this chunk
 		size_t			m_memSize;		// allocated size of this memory
@@ -57,10 +68,10 @@ class alignas(8) vvector_base {
 	size_t SetSize(size_t size);
 	size_t GetCapacity() const;
 	size_t SetCapacity(size_t capacity);
-	__INLINE size_t StepSize() const							{ return m_step; };
-	__INLINE size_t StepSize(size_t stepSize)					{ if (stepSize) m_step = stepSize; return m_step; };
-	__INLINE size_t MaxSize() const								{ return m_max; };
-	__INLINE size_t MaxSize(size_t stepSize)					{ if (stepSize) m_max = stepSize; return m_max; };
+	size_t StepSize() const							{ return m_step; };
+	size_t StepSize(size_t stepSize)					{ if (stepSize) m_step = stepSize; return m_step; };
+	size_t MaxSize() const								{ return m_max; };
+	size_t MaxSize(size_t stepSize)					{ if (stepSize) m_max = stepSize; return m_max; };
 
 	APTR GetElementAt(size_t index) const;
 	APTR Insert(size_t index, APTR element);
