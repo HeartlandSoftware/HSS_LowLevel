@@ -1,12 +1,23 @@
-//	StatsConfig.h
-//
-//	Version 1.0
-//	Started:	 March 5, 2001
-//	Last Modified:   September 29, 2009
+/**
+ * StatsConfig.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-
-#ifndef __STATSCONFIG_H
-#define __STATSCONFIG_H
+#ifndef __HSS_STATSCONFIG_H
+#define __HSS_STATSCONFIG_H
 
 #ifdef _DLL
 #include <afx.h>
@@ -90,10 +101,10 @@ class StatsEntry : public MinNode {		// for the list for all entries for the sta
 	virtual ~StatsEntry()							{ };
 	StatsEntry &operator=(const StatsEntry &se);
 
-	__INLINE StatsEntry *LN_Succ() const			{ return (StatsEntry *)MinNode::LN_Succ(); }
-	__INLINE StatsEntry *LN_Pred() const			{ return (StatsEntry *)MinNode::LN_Pred(); };
+	StatsEntry *LN_Succ() const						{ return (StatsEntry *)MinNode::LN_Succ(); }
+	StatsEntry *LN_Pred() const						{ return (StatsEntry *)MinNode::LN_Pred(); };
 							// iterators for the main list
-	__INLINE StatsEntry *LN_Next() const			{ return m_displaySucc;	};
+	StatsEntry *LN_Next() const						{ return m_displaySucc;	};
 
 	void Initialize(const struct viewentry* ve);
 
@@ -126,7 +137,7 @@ class StatsEntryCollection {
 
 	StatsEntryCollection &operator=(const StatsEntryCollection &sec);
 
-	__INLINE std::uint32_t NumStats() const					{ return m_statsList.GetCount(); };
+	std::uint32_t NumStats() const					{ return m_statsList.GetCount(); };
 	std::uint32_t NumDisplayableStats() const;
 	bool MakeDisplayable(StatsEntry *stat, bool displayable, std::uint32_t index = (std::uint32_t)-1);
 											// if (displayable) then stat is added/moved to the list at (index)
@@ -136,7 +147,7 @@ class StatsEntryCollection {
 											// adds a completely new stat to the set, returns its index in the main list
 	void RemoveStat(StatsEntry *stat);		// removes the stat from both lists
 
-	__INLINE std::uint32_t IndexOf(StatsEntry *stat) const	{ return m_statsList.NodeIndex(stat); };
+	std::uint32_t IndexOf(StatsEntry *stat) const	{ return m_statsList.NodeIndex(stat); };
 	std::uint32_t DisplayIndexOf(StatsEntry *stat) const;
 
 	virtual StatsEntry *New() const							{ return new StatsEntry(); };
@@ -147,9 +158,9 @@ class StatsEntryCollection {
 													// protected to make sure that the '=' operator is used to correctly
 													// use the New() virtual functions above
 
-	__INLINE StatsEntry *FirstStat() const					{ return m_statsList.LH_Head(); };
-	__INLINE StatsEntry *StatsAt(std::uint32_t index) const	{ return m_statsList.IndexNode(index); };
-	__INLINE StatsEntry *FirstDisplayStat() const			{ return m_displayFirst; };
+	StatsEntry *FirstStat() const					{ return m_statsList.LH_Head(); };
+	StatsEntry *StatsAt(std::uint32_t index) const	{ return m_statsList.IndexNode(index); };
+	StatsEntry *FirstDisplayStat() const			{ return m_displayFirst; };
 	StatsEntry *DisplayStatsAt(std::uint32_t index) const;
 	StatsEntry *FindStat(const TCHAR *attributeNameStr) const;
 
@@ -166,4 +177,4 @@ class StatsEntryCollection {
 #pragma managed(pop)
 #endif
 
-#endif /* __STATSCONFIG_H */
+#endif /* __HSS_STATSCONFIG_H */

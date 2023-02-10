@@ -1,17 +1,20 @@
-//	exprtopt.cpp
-//
-//	By Robert W. Bryce
-//	Started:	May 18, 1996
-//	Last Modified:	March 16, 2001
-
-
-//	Aug. 22:		added code to handle column-delimited output
-//	December 8, 1997:	encapsulated all the code into a class to it's more "tidy",
-//				hopefully easier to manage
-//	Feb. 17, '98:		fixed a call to ::WriteProfileString which should have
-//				been CWinApp::WriteProfileString
-//	March 16, 2001:		RWB: added parm to GetExportFilter() to choose between using
-//				0's instead of '|'s as separators to work with the OPENFILENAME structure
+/**
+ * ExprtOpt.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifdef _MSC_VER
 #include <afxwin.h>

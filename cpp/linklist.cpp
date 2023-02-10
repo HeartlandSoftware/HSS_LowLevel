@@ -1,51 +1,20 @@
-//    LINKLIST.CPP
-//
-//    Started:       May 8, 1992
-//    Last Modified: November 2, 2015
-//    Version 2.0
-//    By Robert W. Bryce
-
-/* This module is to contain some of the lower-level routines for manipulating
-   linked lists for the forestry project.  All efforts will be made to keep 
-   this standard C code, and therefor machine-independent.  Linked lists here
-   follow the same basic structure as that used on standard Amiga linked
-   lists.  There is no particular reason for this other than it was there and
-   it was something to work from.
-
-   The linklist class acts as both the head and tail of the link list.
-   lh_Tail always stays as NULL and is used as the marker for looping through
-   the list.  The first element starts at (MinNode*)this, where 'this' is a
-   MinList*.  The last element of the list is always at
-   (MinNode*)this->lh_Tail.  So, these are like "fake" elements, and the
-   elements that you actually add and remove from the list are the second
-   through to the second-to-last elements, inclusive.  This means that the
-   node pointers in the list class remain automatically updated for all time.
-
-   January 9, 1998:     added MinList::NodeIndex(), MinList::IndexNode()
-   January 28:          added List::FindNextName()
-   February 3:          added List::InsertAlphabetical()
-   April 8:             added List::FindPtr()
-   May 21, 1998:        no functionality added or changed, just made the
-			string search and placement methods a bit more robust
-			by checking for NULL, etc.
-   November 6, 1998:    moved List::FindPtr() into a new class called PtrList,
-			added PtrNode class
-   March 8, 1999:       added FindPredName(), FindLastName() methods to the
-			List class
-   March 27, 2000:	optimized IndexNode() to search either way on the linked
-			list
-   April 4, 2000:	added PtrList::FindPtrIndex()
-   May 10, 2000:	added the Big* classes
-   May 11, 2000:	added LN_SuccWrap() and LN_PredWrap() methods to MinNode
-   June 20, 2001:	added Replace(), couple days earlier added MinList
-   Nov 30, 2001:	inlined more routines
-   Dec 28, 2006:	added EmptyList()
-   Jan 3, 2007:		added more AppendFromList() routines
-   Jan 8, 2007:		little bit faster Reverse() routines
-   Feb 20, 2007:	added MoveHead(), InsertList() routines
-   Feb 28, 2007:	finished the migration to the newer classes (depreciating the stuff with a std::uint16_t counter field)
-   June 11, 2007:	added FindNextPtr(), FindNextPtrIndex()
-*/
+/**
+ * linklist.cpp
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include "intel_check.h"
 
@@ -64,6 +33,38 @@
 #include <cassert>
 #endif
 #endif
+
+
+MinNode* MinNode::LN_SuccWrap() const {
+	MinNode* node = ln_Succ;
+
+#ifdef DEBUG
+	weak_assert(node);
+#endif							  
+
+	if (!node->ln_Succ) {
+		long** l = (long**)node;
+		node = (MinNode*)(--l);
+		node = node->ln_Succ;
+	}
+	return node;
+}
+
+
+MinNode* MinNode::LN_PredWrap() const {
+	MinNode* node = ln_Pred;
+
+#ifdef DEBUG
+	weak_assert(node);
+#endif							  
+
+	if (!node->ln_Pred) {
+		long** l = (long**)node;
+		node = (MinNode*)(++l);
+		node = node->ln_Pred;
+	}
+	return node;
+}
 
 
 MinList::MinList() {
