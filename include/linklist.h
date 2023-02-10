@@ -1,14 +1,20 @@
-//    LINKLIST.H
-//
-//    Started:       May 8, 1992
-//    Last Modified: November 2, 2015
-//    Version 2.0
-//    By Robert W. Bryce
-
-//	October 7, 2002: RWB: added __INLINE Wrap functions for Node, PtrNode
-//	March 10, 2005:	RWB: added Swap()
-//	March 24, 2006: RWB: added PtrList
-//	January 11, 2007: RWB: added the template RefNode and RefList classes
+/**
+ * linklist.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #pragma once
 
@@ -51,19 +57,19 @@ class MinNode {
 	MinNode *ln_Pred;
 
     public:
-    DEVICE __INLINE MinNode *LN_Succ() const				{ return ln_Succ; };
-    DEVICE __INLINE MinNode *LN_Pred() const				{ return ln_Pred; };
-	DEVICE __INLINE MinNode *LN_SuccWrap() const;
-	DEVICE __INLINE MinNode *LN_PredWrap() const;
+    DEVICE MinNode *LN_Succ() const				{ return ln_Succ; };
+    DEVICE MinNode *LN_Pred() const				{ return ln_Pred; };
+	DEVICE MinNode *LN_SuccWrap() const;
+	DEVICE MinNode *LN_PredWrap() const;
 
-	DEVICE __INLINE void Clear()							{ ln_Succ = ln_Pred = nullptr; };
-};					// used to turn this into a circular list
+	DEVICE void Clear()							{ ln_Succ = ln_Pred = nullptr; };
+};
 
 
 #ifdef HSS_SHOULD_PRAGMA_PACK
 #pragma pack(pop)
-#pragma pack(push, 2)			// force to go to 1-byte packing rules,
-#endif					// to make these classes nice and small
+#pragma pack(push, 8)								// force to go to 8-byte packing rules,
+#endif												// to make these classes nice and small
 
 
 #ifndef __CUDACC__
@@ -71,10 +77,10 @@ class Node : public MinNode {
     public:
     TCHAR *ln_Name;
         
-    DEVICE __INLINE Node *LN_Succ() const					{ return (Node *)MinNode::LN_Succ(); };
-    DEVICE __INLINE Node *LN_Pred() const					{ return (Node *)MinNode::LN_Pred(); };
-	DEVICE __INLINE Node *LN_SuccWrap() const				{ return (Node *)MinNode::LN_SuccWrap(); };
-	DEVICE __INLINE Node *LN_PredWrap() const				{ return (Node *)MinNode::LN_PredWrap(); };
+    DEVICE Node *LN_Succ() const					{ return (Node *)MinNode::LN_Succ(); };
+    DEVICE Node *LN_Pred() const					{ return (Node *)MinNode::LN_Pred(); };
+	DEVICE Node *LN_SuccWrap() const				{ return (Node *)MinNode::LN_SuccWrap(); };
+	DEVICE Node *LN_PredWrap() const				{ return (Node *)MinNode::LN_PredWrap(); };
 };
 
 
@@ -82,10 +88,10 @@ class SNode : public MinNode {
     public:
 	tstring ln_Name;
 
-	DEVICE __INLINE SNode *LN_Succ() const					{ return (SNode *)MinNode::LN_Succ(); };
-	DEVICE __INLINE SNode *LN_Pred() const					{ return (SNode *)MinNode::LN_Pred(); };
-	DEVICE __INLINE SNode *LN_SuccWrap() const				{ return (SNode *)MinNode::LN_SuccWrap(); };
-	DEVICE __INLINE SNode *LN_PredWrap() const				{ return (SNode *)MinNode::LN_PredWrap(); };
+	DEVICE SNode *LN_Succ() const					{ return (SNode *)MinNode::LN_Succ(); };
+	DEVICE SNode *LN_Pred() const					{ return (SNode *)MinNode::LN_Pred(); };
+	DEVICE SNode *LN_SuccWrap() const				{ return (SNode *)MinNode::LN_SuccWrap(); };
+	DEVICE SNode *LN_PredWrap() const				{ return (SNode *)MinNode::LN_PredWrap(); };
 };
 #endif
 
@@ -94,22 +100,22 @@ class PtrNode : public MinNode {				// use RefNode instead
     public:
 	APTR ln_Ptr;
 
-	DEVICE __INLINE PtrNode *LN_Succ() const				{ return (PtrNode *)MinNode::LN_Succ(); };
-	DEVICE __INLINE PtrNode *LN_Pred() const				{ return (PtrNode *)MinNode::LN_Pred(); };
-	DEVICE __INLINE PtrNode *LN_SuccWrap() const			{ return (PtrNode *)MinNode::LN_SuccWrap(); };
-	DEVICE __INLINE PtrNode *LN_PredWrap() const			{ return (PtrNode *)MinNode::LN_PredWrap(); };
+	DEVICE PtrNode *LN_Succ() const				{ return (PtrNode *)MinNode::LN_Succ(); };
+	DEVICE PtrNode *LN_Pred() const				{ return (PtrNode *)MinNode::LN_Pred(); };
+	DEVICE PtrNode *LN_SuccWrap() const			{ return (PtrNode *)MinNode::LN_SuccWrap(); };
+	DEVICE PtrNode *LN_PredWrap() const			{ return (PtrNode *)MinNode::LN_PredWrap(); };
 };
 
 
 template <class cls> class RefNode : public PtrNode {
     public:
-	DEVICE __INLINE cls *LN_Ptr() const						{ return (cls *)ln_Ptr; };
-	DEVICE __INLINE cls *LN_Ptr(const cls *object)			{ ln_Ptr = (APTR)object; return (cls *)ln_Ptr; };
+	DEVICE cls *LN_Ptr() const						{ return (cls *)ln_Ptr; };
+	DEVICE cls *LN_Ptr(const cls *object)			{ ln_Ptr = (APTR)object; return (cls *)ln_Ptr; };
 
-	DEVICE __INLINE RefNode<cls> *LN_Succ() const			{ return (RefNode<cls> *)PtrNode::LN_Succ(); };
-	DEVICE __INLINE RefNode<cls> *LN_Pred() const			{ return (RefNode<cls> *)PtrNode::LN_Pred(); };
-	DEVICE __INLINE RefNode<cls> *LN_SuccWrap() const		{ return (RefNode<cls> *)PtrNode::LN_SuccWrap(); };
-	DEVICE __INLINE RefNode<cls> *LN_PredWrap() const		{ return (RefNode<cls> *)PtrNode::LN_PredWrap(); };
+	DEVICE RefNode<cls> *LN_Succ() const			{ return (RefNode<cls> *)PtrNode::LN_Succ(); };
+	DEVICE RefNode<cls> *LN_Pred() const			{ return (RefNode<cls> *)PtrNode::LN_Pred(); };
+	DEVICE RefNode<cls> *LN_SuccWrap() const		{ return (RefNode<cls> *)PtrNode::LN_SuccWrap(); };
+	DEVICE RefNode<cls> *LN_PredWrap() const		{ return (RefNode<cls> *)PtrNode::LN_PredWrap(); };
 };
 
 
@@ -151,20 +157,20 @@ class MinList {
     DEVICE MinList();
 	DEVICE MinList(MinList &&list);
     	 
-    DEVICE __INLINE bool IsEmpty() const								{ return (lh_TailPred == (MinNode *)this); };
-	DEVICE __INLINE std::uint32_t GetCount() const						{ return lh_cnt; };
+    DEVICE bool IsEmpty() const								{ return (lh_TailPred == (MinNode *)this); };
+	DEVICE std::uint32_t GetCount() const						{ return lh_cnt; };
 
-	DEVICE __INLINE MinNode *LH_Head() const							{ return lh_Head; };
-	DEVICE __INLINE MinNode *LH_Tail() const							{ return lh_TailPred; };
+	DEVICE MinNode *LH_Head() const							{ return lh_Head; };
+	DEVICE MinNode *LH_Tail() const							{ return lh_TailPred; };
 
 	DEVICE bool NodeHasIndex(const MinNode* Node) const;				// returns whether a node is on the list or not
 	DEVICE std::uint32_t NodeIndex(const MinNode *Node) const;		// returns index of node on the list, or (std::uint32_t)-1
 	DEVICE MinNode * IndexNode(std::uint32_t index) const;			// return node at 'index'
 
-	DEVICE __INLINE void AddHead(MinNode *Node)							{ Insert(Node, (MinNode *)this); };
-	DEVICE __INLINE void AddTail(MinNode *Node)							{ Insert(Node, lh_TailPred); };
+	DEVICE void AddHead(MinNode *Node)							{ Insert(Node, (MinNode *)this); };
+	DEVICE void AddTail(MinNode *Node)							{ Insert(Node, lh_TailPred); };
     DEVICE  void Insert(MinNode *New, MinNode *Where);
-	DEVICE __INLINE void InsertIndex(MinNode *New, std::uint32_t index)	{ if (index >= GetCount()) AddTail(New); else { MinNode *mn = IndexNode(index); Insert(New, mn->LN_Pred()); } };
+	DEVICE void InsertIndex(MinNode *New, std::uint32_t index)	{ if (index >= GetCount()) AddTail(New); else { MinNode *mn = IndexNode(index); Insert(New, mn->LN_Pred()); } };
 
 	DEVICE MinNode * RemHead();
 	DEVICE MinNode * RemTail();
@@ -208,11 +214,11 @@ template <class nodecls> class MinListTempl : public MinList {				// just strong
 	MinListTempl() = default;
 	MinListTempl(MinListTempl<nodecls> &&list) : MinList((MinList &&)list)	{ };
 
-	DEVICE __INLINE nodecls *LH_Head() const							{ return (nodecls *)MinList::LH_Head(); };
-	DEVICE __INLINE nodecls *LH_Tail() const							{ return (nodecls *)MinList::LH_Tail(); };
-	DEVICE __INLINE nodecls *IndexNode(std::uint32_t index) const		{ return (nodecls *)MinList::IndexNode(index); };
-	DEVICE __INLINE nodecls *RemHead()									{ return (nodecls *)MinList::RemHead(); };
-	DEVICE __INLINE nodecls *RemTail()									{ return (nodecls *)MinList::RemTail(); };
+	DEVICE nodecls *LH_Head() const							{ return (nodecls *)MinList::LH_Head(); };
+	DEVICE nodecls *LH_Tail() const							{ return (nodecls *)MinList::LH_Tail(); };
+	DEVICE nodecls *IndexNode(std::uint32_t index) const		{ return (nodecls *)MinList::IndexNode(index); };
+	DEVICE nodecls *RemHead()									{ return (nodecls *)MinList::RemHead(); };
+	DEVICE nodecls *RemTail()									{ return (nodecls *)MinList::RemTail(); };
 
 	MinListIterator<nodecls> begin() { return MinListIterator<nodecls>(LH_Head()); }
 	MinListIterator<nodecls> end() { return MinListIterator<nodecls>(LH_Tail()->LN_Succ()); }
@@ -232,13 +238,13 @@ class List : public MinList {
 	DEVICE Node * FindPredName(Node *from, const TCHAR *Name, bool case_sensitive = true) const;
 	DEVICE Node * FindLastName(const TCHAR *Name, bool case_sensitive = true) const;
     	
-	DEVICE __INLINE Node *IndexNode(std::uint32_t index) const			{ return (Node *)MinList::IndexNode(index); };
+	DEVICE Node *IndexNode(std::uint32_t index) const			{ return (Node *)MinList::IndexNode(index); };
 
-	DEVICE __INLINE Node *RemHead()										{ return (Node *)MinList::RemHead(); };
-    	DEVICE __INLINE Node *RemTail()									{ return (Node *)MinList::RemTail(); };
+	DEVICE Node *RemHead()										{ return (Node *)MinList::RemHead(); };
+    	DEVICE Node *RemTail()									{ return (Node *)MinList::RemTail(); };
     	
-    	DEVICE __INLINE Node *LH_Head() const							{ return (Node *)MinList::LH_Head(); };
-    	DEVICE __INLINE Node *LH_Tail() const							{ return (Node *)MinList::LH_Tail(); };
+    	DEVICE Node *LH_Head() const							{ return (Node *)MinList::LH_Head(); };
+    	DEVICE Node *LH_Tail() const							{ return (Node *)MinList::LH_Tail(); };
 
 	DEVICE std::uint32_t GetNameCount(const TCHAR *Name, bool case_sensitive = true) const;
 };
@@ -256,13 +262,13 @@ public:
 	DEVICE SNode * FindPredName(SNode *from, const tstring &Name, bool case_sensitive = true) const;
 	DEVICE SNode * FindLastName(const tstring &Name, bool case_sensitive = true) const;
 
-	DEVICE __INLINE SNode *IndexNode(std::uint32_t index) const			{ return (SNode *)MinList::IndexNode(index); };
+	DEVICE SNode *IndexNode(std::uint32_t index) const			{ return (SNode *)MinList::IndexNode(index); };
 
-	DEVICE __INLINE SNode *RemHead()									{ return (SNode *)MinList::RemHead(); };
-	DEVICE __INLINE SNode *RemTail()									{ return (SNode *)MinList::RemTail(); };
+	DEVICE SNode *RemHead()									{ return (SNode *)MinList::RemHead(); };
+	DEVICE SNode *RemTail()									{ return (SNode *)MinList::RemTail(); };
 
-	DEVICE __INLINE SNode *LH_Head() const								{ return (SNode *)MinList::LH_Head(); };
-	DEVICE __INLINE SNode *LH_Tail() const								{ return (SNode *)MinList::LH_Tail(); };
+	DEVICE SNode *LH_Head() const								{ return (SNode *)MinList::LH_Head(); };
+	DEVICE SNode *LH_Tail() const								{ return (SNode *)MinList::LH_Tail(); };
 
 	DEVICE std::uint32_t GetNameCount(const tstring &Name, bool case_sensitive = true) const;
 };
@@ -281,7 +287,7 @@ class PtrList : public MinList {				// use RefList instead
 	DEVICE std::uint32_t FindPtrIndex(const APTR ptr) const;
 	DEVICE std::uint32_t FindNextPtrIndex(const std::uint32_t continue_from, const APTR ptr) const;
     	
-	DEVICE __INLINE PtrNode *IndexNode(std::uint32_t index) const		{ return (PtrNode *)MinList::IndexNode(index); };
+	DEVICE PtrNode *IndexNode(std::uint32_t index) const		{ return (PtrNode *)MinList::IndexNode(index); };
 
 	DEVICE std::uint32_t GetPtrCount(const APTR ptr) const;
 
@@ -294,28 +300,28 @@ template <class cls, class nodecls = RefNode<cls> > class RefList : public PtrLi
 	RefList() = default;
 	RefList(RefList<cls, nodecls> &&list) : PtrList(list)				{ };
 
-	DEVICE __INLINE nodecls *FindPtr(const cls *ptr) const				{ return (nodecls *)PtrList::FindPtr((APTR)ptr); };
-	DEVICE __INLINE nodecls *FindNextPtr(const nodecls *continue_from, const cls *ptr) const
+	DEVICE nodecls *FindPtr(const cls *ptr) const				{ return (nodecls *)PtrList::FindPtr((APTR)ptr); };
+	DEVICE nodecls *FindNextPtr(const nodecls *continue_from, const cls *ptr) const
 																		{ return (nodecls *)PtrList::FindNextPtr(continue_from, ptr); };
-	DEVICE __INLINE std::uint32_t FindPtrIndex(const cls *ptr) const	{ return PtrList::FindPtrIndex((APTR)ptr); };
-	DEVICE __INLINE std::uint32_t FindNextPtrIndex(const std::uint32_t continue_from, const cls *ptr) const
+	DEVICE std::uint32_t FindPtrIndex(const cls *ptr) const	{ return PtrList::FindPtrIndex((APTR)ptr); };
+	DEVICE std::uint32_t FindNextPtrIndex(const std::uint32_t continue_from, const cls *ptr) const
 																		{ return PtrList::FindNextPtrIndex(continue_from, ptr); };
-	DEVICE __INLINE nodecls *IndexNode(std::uint32_t index) const		{ return (nodecls *)PtrList::IndexNode(index); };
-	DEVICE __INLINE cls *IndexPtr(std::uint32_t index) const			{ nodecls *pn = IndexNode(index); if (pn) return pn->LN_Ptr(); return nullptr; };
+	DEVICE nodecls *IndexNode(std::uint32_t index) const		{ return (nodecls *)PtrList::IndexNode(index); };
+	DEVICE cls *IndexPtr(std::uint32_t index) const			{ nodecls *pn = IndexNode(index); if (pn) return pn->LN_Ptr(); return nullptr; };
 		
 	DEVICE std::uint32_t GetPtrCount(const cls *ptr) const				{ return PtrList::GetPtrCount((APTR)ptr); };
 
 	DEVICE void FindPtr(const cls *ptr, RefList<cls, nodecls> &targetList)
 																		{ PtrList::FindPtr((APTR)ptr, targetList); };
 
-	DEVICE __INLINE nodecls *RemHead()									{ return (nodecls *)PtrList::RemHead(); };
-    DEVICE __INLINE nodecls *RemTail()									{ return (nodecls *)PtrList::RemTail(); };
+	DEVICE nodecls *RemHead()									{ return (nodecls *)PtrList::RemHead(); };
+    DEVICE nodecls *RemTail()									{ return (nodecls *)PtrList::RemTail(); };
     	
-    DEVICE __INLINE nodecls *LH_Head() const							{ return (nodecls *)PtrList::LH_Head(); };
-    DEVICE __INLINE nodecls *LH_Tail() const							{ return (nodecls *)PtrList::LH_Tail(); };
+    DEVICE nodecls *LH_Head() const							{ return (nodecls *)PtrList::LH_Head(); };
+    DEVICE nodecls *LH_Tail() const							{ return (nodecls *)PtrList::LH_Tail(); };
 
-	DEVICE __INLINE void AddSetFrom(const RefList<cls, nodecls> &list);
-	DEVICE __INLINE void RemoveSetFrom(const RefList<cls, nodecls> &list);
+	DEVICE void AddSetFrom(const RefList<cls, nodecls> &list);
+	DEVICE void RemoveSetFrom(const RefList<cls, nodecls> &list);
 };
 
 #ifdef __CUDACC__
@@ -328,38 +334,6 @@ using namespace HSSLowlevel_CUDA;
 #ifdef HSS_SHOULD_PRAGMA_PACK
 #pragma pack(pop)			// go back to whatever the project
 #endif					// settings are...
-
-MinNode *MinNode::LN_SuccWrap() const {
-	MinNode *node = ln_Succ;
-
-    #ifdef DEBUG
-	weak_assert(node);
-    #endif							  
-	
-	if (!node->ln_Succ) {
-		long **l = (long **)node;
-		node = (MinNode *)(--l);
-		node = node->ln_Succ;
-	}
-	return node;
-}
-
-
-MinNode *MinNode::LN_PredWrap() const {
-	MinNode *node = ln_Pred;
-
-    #ifdef DEBUG
-	weak_assert(node);
-    #endif							  
-
-	if (!node->ln_Pred) {
-		long **l = (long **)node;
-		node = (MinNode *)(++l);
-		node = node->ln_Pred;
-	}
-	return node;
-}
-
 
 template <class cls, class nodecls>
 void RefList<cls, nodecls>::AddSetFrom(const RefList<cls, nodecls> &list) {

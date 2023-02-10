@@ -37,17 +37,14 @@ add_library(LowLevel STATIC
     cpp/Dlgcnvt.cpp
     cpp/Exprtopt.cpp
     cpp/hresult.cpp
-    cpp/htree.cpp
     cpp/linklist.cpp
     cpp/linklist.noclang.cpp
     cpp/misc.c
-    cpp/objectcache.cpp
     cpp/pevents.cpp
     cpp/propsysreplacement.cpp
     cpp/str_printf.cpp
     cpp/tstring.cpp
     cpp/validation_object.cpp
-    cpp/valuecache.cpp
     cpp/vvector.cpp
 )
 
@@ -100,14 +97,11 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/hresult.h
     PUBLIC_HEADER include/hss_inlines.h
     PUBLIC_HEADER include/hss_propagate_const.h
-    PUBLIC_HEADER include/htree.h
     PUBLIC_HEADER include/insert_ordered_map.h
     PUBLIC_HEADER include/intel_check.h
     PUBLIC_HEADER include/intrusive_ptr.h
     PUBLIC_HEADER include/linklist.h
     PUBLIC_HEADER include/misc.h
-    PUBLIC_HEADER include/objectcache.h
-    PUBLIC_HEADER include/objectcache.inl
     PUBLIC_HEADER include/out_helper.h
     PUBLIC_HEADER include/propagate_const.h
     PUBLIC_HEADER include/propsysreplacement.h
@@ -118,7 +112,6 @@ set_target_properties(LowLevel PROPERTIES
     PUBLIC_HEADER include/types.h
     PUBLIC_HEADER include/validation_ids.h
     PUBLIC_HEADER include/validation_object.h
-    PUBLIC_HEADER include/valuecache.h
     PUBLIC_HEADER include/vvector.h
     PUBLIC_HEADER include/WinReplacement.h
 )

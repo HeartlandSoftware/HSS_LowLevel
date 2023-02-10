@@ -1,14 +1,23 @@
-//	convert.h
-//
-//	By Travis E. Redpath
-//	Started:	Aug. 12, 2010
-//	Last Modified:	Aug. 12, 2010
-//
-//  Split off from MFC_Extensions Dlgcnvt.h
+/**
+ * convert.h
+ *
+ * Copyright 2010-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-
-#ifndef _CONVERT_H__
-#define _CONVERT_H__
+#ifndef __HSS_CONVERT_H__
+#define __HSS_CONVERT_H__
 
 #ifdef _MSC_VER
 #if (!defined(__INTEL_COMPILER)) && (!defined(__INTEL_LLVM_COMPILER))
@@ -200,4 +209,4 @@ HSS_PRAGMA_WARNING_POP
 #endif
 #endif
 
-#endif //_CONVERT_H__
+#endif //__HSS_CONVERT_H__

@@ -1,14 +1,20 @@
-//    VVECTOR.CPP
-//
-//    Started:       November 12, 2008
-//    Last Modified: May 23, 2010
-//    Version 1.0
-//    By Robert W. Bryce
-
-//	STL vectors are simple wrappers for C++ arrays that can dynamically grow and shrink as needed/told.
-//	But what happens when so many re-allocations fragment memory so much that they can't?  Well, things
-//	go wrong because they assume contiguous memory.  This class is a subset of vector's functionality
-//	(because that's all we need) but don't require contiguous memory for the array.
+/**
+ * vvector.h
+ *
+ * Copyright 2008-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include "intel_check.h"
 #include "vvector.h"

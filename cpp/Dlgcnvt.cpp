@@ -1,3 +1,21 @@
+/**
+ * Dlgcnvt.h
+ *
+ * Copyright 2004-2023 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "types.h"
 #include "Dlgcnvt.h"
 #include <float.h>              // floating point precision
@@ -182,4 +200,19 @@ UnitConvert::STORAGE_UNIT UnitConversion::AngleDisplay(UnitConvert::STORAGE_UNIT
 		m_angle_display = mode;
 	else	AfxThrowNotSupportedException();	// asked for a conversion not supported
 	return m_angle_display;
+}
+
+
+float UnitConversion::ConvertUnit(float value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format) {
+	return UnitConvert::convertUnit(value, to_format, from_format); 
+}	// **** note reversal of parmeter order
+
+
+double UnitConversion::ConvertUnit(double value, UnitConvert::STORAGE_UNIT from_format, UnitConvert::STORAGE_UNIT to_format) { 
+	return UnitConvert::convertUnit(value, to_format, from_format);
+}
+
+
+std::string UnitConversion::UnitName(UnitConvert::STORAGE_UNIT format, bool short_format) {
+	return UnitConvert::UnitName(format, short_format); 
 }
