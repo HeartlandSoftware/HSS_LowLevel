@@ -200,7 +200,7 @@ typedef unsigned char TBYTE , *PTBYTE ;
 typedef void *APTR;
 
 #ifndef __INLINE
-#define __INLINE
+#define __INLINE __inline
 #endif
 
 #ifdef __CUDACC__
