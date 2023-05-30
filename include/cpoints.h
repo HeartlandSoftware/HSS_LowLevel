@@ -58,7 +58,7 @@ public:
 
 	double m_dblDistance;
 
-	XYC_Point()					{ }
+	XYC_Point() = default;
 	XYC_Point(double X, double Y, COLORREF c, XYC_MODE mode = 0)		{ x = X; y = Y; m_color = c; m_pointColor = c; m_modeFlag = mode; m_dblDistance = 0.0;}
 	XYC_Point(double X, double Y, COLORREF c, COLORREF pc, XYC_MODE mode = 0){x = X; y = Y; m_color = c; m_pointColor = pc; m_modeFlag = mode; m_dblDistance = 0.0; }
 };

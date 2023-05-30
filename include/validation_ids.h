@@ -219,6 +219,11 @@ namespace validation
 		constexpr std::string_view invalid_weather = "WX.Hourly.Invalid";
 
 		/// <summary>
+		/// An imported hourly weather value started after noon.
+		/// </summary>
+		constexpr std::string_view invalid_weather_start = "WX.Hourly.InvalidStartHour";
+
+		/// <summary>
 		/// The scenario cannot add the specified element.
 		/// </summary>
 		constexpr std::string_view add_element_failed = "Object.AddElement:Failed";

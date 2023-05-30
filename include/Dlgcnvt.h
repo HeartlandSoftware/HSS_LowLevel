@@ -55,6 +55,7 @@ protected:
 								m_intensity_display,		// use the high order word to store the energy, and the low order word to store the distance & time
 								m_mass_area_display,		// use the high order word to store the mass, and the low order word to store the area
 								m_power_display;
+	std::string_view			m_language_display;
 
 public:
 	UnitConversion(const TCHAR *group_name);
@@ -104,6 +105,9 @@ public:
 	static CString CUnitName(UnitConvert::STORAGE_UNIT format, bool short_format)											{ return CString(UnitConvert::UnitName(format, short_format).c_str()); }
 #endif
 
+	std::string_view DisplayLanguage() const;
+	std::string_view DisplayPrimaryLanguage() const;
+	bool SetDisplayLanguage(const char* language);
 };
 
 #ifdef HSS_SHOULD_PRAGMA_PACK
