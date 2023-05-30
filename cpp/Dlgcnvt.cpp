@@ -19,6 +19,7 @@
 #include "types.h"
 #include "Dlgcnvt.h"
 #include <float.h>              // floating point precision
+#include <boost/algorithm/string.hpp>
 
 #ifdef __GNUC__
 #include <stdexcept>
@@ -44,6 +45,7 @@ UnitConversion::UnitConversion(const TCHAR *group_name)
 	m_mass_area_display = ((UnitConvert::STORAGE_UNIT)STORAGE_FORMAT_KG << 0x20) | STORAGE_FORMAT_M2;
 	m_intensity_display = ((UnitConvert::STORAGE_UNIT)STORAGE_FORMAT_KILOWATT_SECOND << 0x20) | STORAGE_FORMAT_M;
 	m_power_display = STORAGE_FORMAT_KILOWATT_;
+	m_language_display = "en-ca";
 }
 
 
@@ -215,4 +217,32 @@ double UnitConversion::ConvertUnit(double value, UnitConvert::STORAGE_UNIT from_
 
 std::string UnitConversion::UnitName(UnitConvert::STORAGE_UNIT format, bool short_format) {
 	return UnitConvert::UnitName(format, short_format); 
+}
+
+
+std::string_view UnitConversion::DisplayLanguage() const {
+	return m_language_display;
+}
+
+
+bool UnitConversion::SetDisplayLanguage(const char* language) {
+	m_language_display = "";
+	if (boost::iequals(language, "en-us"))
+		m_language_display = "en-us";
+	if (boost::iequals(language, "en-ca"))
+		m_language_display = "en-ca";
+	if (boost::iequals(language, "fr-ca"))
+		m_language_display = "fr-ca";
+	return strlen(m_language_display.data()) > 0;
+}
+
+
+std::string_view UnitConversion::DisplayPrimaryLanguage() const {
+	if ((m_language_display[0] == 'e') &&
+		(m_language_display[1] == 'n'))
+		return "en";
+	if ((m_language_display[0] == 'f') &&
+		(m_language_display[1] == 'r'))
+		return "fr";
+	return "";
 }
