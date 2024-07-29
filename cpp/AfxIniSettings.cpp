@@ -182,7 +182,7 @@ void IniSettings::GetProfileBinary(const std::string &group_name, const std::str
 {
     tree::ptree::path_type place = tree::path(group_name + "|" + key, '|');
     std::string temp = m_tree.get(place, "");
-    *len = temp.length();
+    *len = (std::uint32_t)temp.length();
     if (temp.length() > 0)
     {
         *data = new std::uint8_t[temp.length()];

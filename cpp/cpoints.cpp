@@ -108,7 +108,6 @@ int CPointsCollection::AddPoint2(double _x, double _y, COLORREF color, COLORREF 
 		}
 	}
 	XYC_Point ssp(_x, _y, color, pointColor, mode);
-	XYC_Point spoint;
 	long array_size = GetSize();
 	if (points.size() == points.capacity())
 		points.reserve(points.size() + 200);
